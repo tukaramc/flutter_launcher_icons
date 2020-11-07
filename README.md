@@ -11,7 +11,8 @@ A command-line tool which simplifies the task of updating your Flutter app's lau
 
 #### Version 0.8.2 (12th Oct 2020)
 
- * Support for web favicons and launcer icons.
+ - Support for web favicons and launcher icons.
+ - Bug fixes and refactoring.
 
 #### Version 0.8.1 (2nd Oct 2020)
 
@@ -152,6 +153,20 @@ For best results try and use a foreground image which has padding much like [the
 
 [Related issue](https://github.com/fluttercommunity/flutter_launcher_icons/issues/96)
 
+#### Can't run web example project!
+
+Make sure that you have enabled web support!
+
+To check whether you have, try running `flutter devices`.
+
+You should see a line similar to the following in its output:
+
+```
+Web Server (web) • web-server • web-javascript • Flutter Tools
+```
+
+If you don't, please [enable web support!](https://flutter.dev/docs/get-started/web#set-up)
+
 #### Launcher icons not present in debug mode
 
 `favicon.png` may not be served with `index.html` when `flutter run -d web-server` is used. Try this!
@@ -162,6 +177,76 @@ $ python3 -m http.server
 ```
 
 Favicons should now be present!
+
+#### `flutter run --flavor` doesn't work with web!
+
+`flutter run --flavor` is currently an [`android` and `iOS` specific feature!](https://github.com/flutter/flutter/issues/59388)
+
+To make this work with `flutter_launcher_icons`, say that you have the following flavor-specific configuration files:
+
+`flutter_launcher_icons-development.yaml`
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/launcher_icon/demo-icon-dev.png"
+```
+
+`flutter_launcher_icons-integration.yaml`
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/launcher_icon/demo-icon-int.png"
+```
+
+`flutter_launcher_icons-production.yaml`
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/launcher_icon/demo-icon.png"
+```
+
+We can tell `flutter_launcher_icons` to only generate web icons for the `production` flavor:
+
+`flutter_launcher_icons-development.yaml`
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  web: false
+  image_path: "assets/launcher_icon/demo-icon-dev.png"
+```
+
+`flutter_launcher_icons-integration.yaml`
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  web: false
+  image_path: "assets/launcher_icon/demo-icon-int.png"
+```
+
+`flutter_launcher_icons-production.yaml`
+```yaml
+flutter_icons:
+  android: true
+  ios: true
+  web: true
+  image_path: "assets/launcher_icon/demo-icon.png"
+```
+
+Using this, `flutter run --flavor <some flavor here>` will work for iOS and Android
+and `web` will always use the production icon!
+
+We make this change here, rather than in `pubspec.yaml` because
+`flutter_launcher_icons` ignores any configuration information in
+`pubspec.yaml` when flavor config files are present!
+
+For a working example, please see [`example/flavors`](example/flavors)!
+
+--------------------
 
 ## :eyes: Example
 
