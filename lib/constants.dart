@@ -38,7 +38,15 @@ const String errorWebCustomLocationNotSupported =
     '(perhaps by making a copy and renaming it). Custom locations are not '
     'supported.';
 
-const String currentVersion = '0.8.2';
+String warningPlatformDirectoryMissing(String platformName) =>
+    '✗ Warning! Not generating icons for $platformName.'
+    ' Platform $platformName is in config, but there is no'
+    ' matching directory. If you want to generate icons for'
+    ' $platformName, make sure you have support for $platformName'
+    ' enabled and have run `flutter create .`'
+    ' in the root directory of your project.';
+
+const String currentVersion = '0.9.0';
 const String introMessage = '''
   ════════════════════════════════════════════
      FLUTTER LAUNCHER ICONS (v$currentVersion)                               
